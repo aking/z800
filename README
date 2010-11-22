@@ -1,0 +1,85 @@
+Z800/X800 Linux Kernel Driver v0.6
+
+About:
+ 
+  A kernel driver for the eMagin Z800/X800.  Most of the USB packet
+info came from eMagin's publically released source code for their
+EMADevice SDK.
+
+WARNING:
+
+  This is ALPHA software.  It might destroy your system and/or
+your HMD.  You try this software at your own risk.  Don't come
+crying to me if your system/hmd stops working.  You've been 
+warned. 
+
+
+Requirements:
+
+  - Z800/X800 HMD (duh)
+  - Kernel 2.6.17 or greater.  It may work with an earlier
+    kernel, but I haven't checked.  Success/failure reports 
+    are welcome.
+  - Kernel support for loadable modules
+
+
+Installation:
+
+ The Short version:
+
+    make
+    make install
+    make load
+
+ The Longer Version:
+
+   1) Run "make".  This will create the kernel module.
+   2) Run "make install".  This will copy the kernel module into
+      your system's /lib/modules/2.6.??/extra directory with the
+      module name "z800.ko"
+   3) Run "modprobe z800".  This will load the module into the kernel.
+      Check your dmesg file.  If all goes well, it should successfully
+      see your Z800.  If not, send me the report.
+
+
+Testing:
+
+  I've included a small test program to show how to control the 
+Z800.  Run "make test" and then "./z800Test".  It should print out 
+the Z800's firmware version and wake it up (note: the led on the control
+base may still be blinking, but the HMD's screens should be active ).
+
+
+TODO:
+  - add proper locking in the driver
+  - use wait_event_interruptable instead of looping
+  - add missing controls ( 3DFLIP, etc )
+  - add EEPROM property programming (offset, gain, etc )
+  - fix dev/z800:0 location.  Use "/dev/z800/0" instead for
+    better multi z800 support
+  - only activate the read_urb when needed, not constantly
+  - add hmd tracking!!  Need usb info for that.
+  - get it into the linux kernel mainline
+  - many others...   
+
+
+Known Bugs:
+  - once 3D Stereo is enable, it can't be disabled until the Z800
+    is disconnected.  Don't know why.
+  - even after the Z800 is woken up, the led on the controller 
+    is still flashing, even though the HMD's screens are active
+ 
+
+Author:
+
+  Adam King  <va3pip@gmail.com>
+
+
+Changelog:
+
+  0.6  [ 2006/10/27 ]  
+     - Initial Alpha Release.
+     - Supports: GET_FIRMWARE, CYCLEBRIGHTNESS, KEEPALIVE.
+                 SET_ENABLE_3D, SLEEP (no support in fw)
+
+
