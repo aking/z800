@@ -1,0 +1,7 @@
+Short Term:
+ - switch to libusb 1.0
+ - add OSX support
+
+Longer Term:
+ - add iOS 4.2+ support
+
